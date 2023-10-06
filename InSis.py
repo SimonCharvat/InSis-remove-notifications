@@ -34,7 +34,8 @@ except:
 
 print("-------------------------")
 
-cred = {"user":"", "pass":""}
+cred = {"user":"",
+        "pass":""}
 
 if cred["user"] == "":
     cred["user"] = input("Enter your Xname: ")
@@ -46,8 +47,21 @@ if cred["pass"] == "":
 
 print("\nWait please...\nOpening web browser (Google Chrome)...")
 print("New update is downloaded automatically if required")
-dr = webdriver.Chrome(ChromeDriverManager().install())
-
+try:
+    dr = webdriver.Chrome(ChromeDriverManager().install())
+except:
+    print()
+    print("###################################################")
+    print("##################   ERROR   ######################")
+    print("###################################################")
+    print("Unable to load or install Chrome web driver\nPlease install or update following packages:")
+    print("webdriver-manager")
+    print("packaging")
+    print()
+    print("You can use following command in your command line:")
+    print("pip install package_name")
+    print("or")
+    print("pip install package_name --upgrade")
 
 dr.get("https://insis.vse.cz/auth/")
 
@@ -59,9 +73,21 @@ dr.find_element(By.ID, "credential_0").send_keys(cred["user"])
 dr.find_element(By.ID, "credential_1").send_keys(cred["pass"])
 sleep(0.1)
 
-dr.find_element(By.ID, "login-btn").click()
 
-sleep(0.1)
+
+while True: # repeat until correct 2FA entered correctly
+    dr.find_element(By.ID, "login-btn").click()
+    sleep(0.1)
+    try:
+        FA_input_field = dr.find_element(By.ID, "overovaci_kod")
+    except:
+        break
+
+    print("Two-factor authorization required")
+    FA_code = input("Enter 2FA code:")
+    FA_input_field.send_keys(FA_code)
+    sleep(0.1)
+    dr.find_element(By.ID, "login-btn").click()
 
 notifications = []
 
