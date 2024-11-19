@@ -53,7 +53,6 @@ if cred["pass"] == "":
 print("\nWait please...\nOpening web browser (Google Chrome)...")
 print("New update is downloaded automatically if required")
 try:
-    #dr = webdriver.Chrome(ChromeDriverManager().install())
     dr = webdriver.Chrome()
 except Exception as e:
     print()
@@ -107,8 +106,6 @@ def get_notifications():
     print()
     global notifications
     notifications = []
-    #notifications = dr.find_elements(By.XPATH, "//a[text()='Announce an exam date of course']") + dr.find_elements(By.XPATH, "//a[text()='Change in exam date']") + dr.find_elements(By.XPATH, "//a[text()='Cancel the exam date in course']")
-    #notifications = dr.find_elements(By.XPATH, "//a[text()='Announce an exam date of course']")
     
     phrases = ["Announce an exam date of course", "Change in exam date", "Cancel the exam date in course", "Vypsání termínu předmětu", "Změna v termínu předmětu", "Zrušení termínu předmětu", "Uvolnění místa na termínu předmětu", "An exam date place in course has become free", "Zaplnění místa na termínu předmětu", "An exam date place in course has been taken", "Změna v&nbsp; termínu předmětu", "Mobilní aplikace Moje studium. Prostě. Studuj. Kdekoli."]
     for i in range(3):
@@ -123,7 +120,6 @@ def get_notifications():
         
         notifications.extend(notifications_part)
 
-    #notifications = dr.find_elements(By.XPATH, f"//a[text()={phrases}]")
     print(f"Notifications left: {len(notifications)}")
 
 get_notifications()
